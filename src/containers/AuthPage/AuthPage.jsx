@@ -1,10 +1,16 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AuthPage.css";
 import useAuthPage from "../../Pregrine/AuthPage/useAuthPage";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
-  const { formData, handleChange, handleSubmit } = useAuthPage(isLogin);
+  const navigate = useNavigate();
+  const { formData, handleChange, handleSubmit, isLoading } = useAuthPage(
+    isLogin,
+    setIsLogin,
+    navigate,
+  );
 
   const toggleAuthMode = (e) => {
     e.preventDefault();
@@ -16,8 +22,6 @@ const AuthPage = () => {
       {/* ── LEFT: Auth Form ── */}
       <div className="auth-left">
         <div className="auth-inner">
-          {/* Logo */}
-
           {/* Heading */}
           <div style={{ marginBottom: "1.5rem" }}>
             <h1 className="auth-heading">
@@ -32,7 +36,7 @@ const AuthPage = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit}>
-            {/* Full Name (Only visible when Signing Up) */}
+            {/* Full Name */}
             {!isLogin && (
               <div className="field-group">
                 <label className="field-label" htmlFor="fullName">
@@ -47,6 +51,7 @@ const AuthPage = () => {
                   value={formData.fullName}
                   onChange={handleChange}
                   required={!isLogin}
+                  disabled={isLoading}
                 />
               </div>
             )}
@@ -65,6 +70,7 @@ const AuthPage = () => {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                disabled={isLoading}
               />
             </div>
 
@@ -73,7 +79,6 @@ const AuthPage = () => {
               <label className="field-label" htmlFor="password">
                 Password
               </label>
-
               <input
                 className="auth-input"
                 id="password"
@@ -83,10 +88,11 @@ const AuthPage = () => {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                disabled={isLoading}
               />
             </div>
 
-            {/* Confirm Password (Only visible when Signing Up) */}
+            {/* Confirm Password */}
             {!isLogin && (
               <div className="field-group">
                 <label className="field-label" htmlFor="confirmPassword">
@@ -101,13 +107,22 @@ const AuthPage = () => {
                   value={formData.confirmPassword}
                   onChange={handleChange}
                   required={!isLogin}
+                  disabled={isLoading}
                 />
               </div>
             )}
 
             {/* Submit Button */}
-            <button type="submit" className="btn-signin">
-              {isLogin ? "Sign In" : "Sign Up"}
+            <button
+              type="submit"
+              className="btn-signin"
+              disabled={isLoading}
+              style={{
+                opacity: isLoading ? 0.7 : 1,
+                cursor: isLoading ? "not-allowed" : "pointer",
+              }}
+            >
+              {isLoading ? "Loading..." : isLogin ? "Sign In" : "Sign Up"}
             </button>
           </form>
 
@@ -196,8 +211,6 @@ const AuthPage = () => {
               </div>
             </div>
           </div>
-
-          {/* Quote */}
         </div>
       </div>
     </div>

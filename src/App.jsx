@@ -37,11 +37,11 @@ import NotificationPreferences from "./containers/NotificationPreferences/Notifi
 // other
 import SearchPage from "./containers/SearchPage/SearchPage";
 import ProfilePage from "./containers/ProfilePage/ProfilePage";
+import { useAuthStore } from "./store/auth.store";
 
 function App() {
-  // placeholder for auth state; replace with real logic later
-  const isAuthenticated = false;
-
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  // let isAuthenticated = false;
   if (!isAuthenticated) {
     return (
       <Router>
