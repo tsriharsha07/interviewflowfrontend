@@ -1,194 +1,206 @@
 import React, { useState } from "react";
-import { Container, Row, Col, Card, Form, Button } from "react-bootstrap";
-import loginLeft from "../../assets/loginLeft.png";
+import "./AuthPage.css";
 import useAuthPage from "../../Pregrine/AuthPage/useAuthPage";
-import RegisterWizard from "../RegisterPage/RegisterPage";
-// import "./AuthPage.css";
 
 const AuthPage = () => {
   const [isLogin, setIsLogin] = useState(true);
   const { formData, handleChange, handleSubmit } = useAuthPage(isLogin);
 
-  const toggleAuthMode = () => setIsLogin(!isLogin);
+  const toggleAuthMode = (e) => {
+    e.preventDefault();
+    setIsLogin(!isLogin);
+  };
 
   return (
-    <>
-      {isLogin ? (
-        <Container
-          fluid
-          className="auth-container vh-100 d-flex align-items-center"
-        >
-          <Row className="w-100 justify-content-center g-0">
-            {/* LEFT ILLUSTRATION */}
-            <Col
-              md={6}
-              lg={6}
-              className="d-none d-md-flex align-items-center justify-content-center left-panel"
-            >
-              <div className="text-center illustration-wrapper">
-                <div className="image-container">
-                  <img
-                    src={loginLeft}
-                    alt="InterviewFlow users"
-                    className="img-fluid illustration-img"
-                  />
-                  <h3 className="fw-bold mt-4 mb-2">Join 50k+ professionals</h3>
-                  <p className="subtitle-text">
-                    Candidates & interviewers scheduling interviews seamlessly
-                  </p>
+    <div className="auth-root">
+      {/* ── LEFT: Auth Form ── */}
+      <div className="auth-left">
+        <div className="auth-inner">
+          {/* Logo */}
+
+          {/* Heading */}
+          <div style={{ marginBottom: "1.5rem" }}>
+            <h1 className="auth-heading">
+              {isLogin ? "Welcome Back" : "Create an Account"}
+            </h1>
+            <p className="auth-sub">
+              {isLogin
+                ? "Enter your credentials to access your project dashboard."
+                : "Sign up today to start managing your projects efficiently."}
+            </p>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit}>
+            {/* Full Name (Only visible when Signing Up) */}
+            {!isLogin && (
+              <div className="field-group">
+                <label className="field-label" htmlFor="fullName">
+                  Full Name
+                </label>
+                <input
+                  className="auth-input"
+                  id="fullName"
+                  name="fullName"
+                  type="text"
+                  placeholder="Jane Doe"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  required={!isLogin}
+                />
+              </div>
+            )}
+
+            {/* Email */}
+            <div className="field-group">
+              <label className="field-label" htmlFor="email">
+                Email Address
+              </label>
+              <input
+                className="auth-input"
+                id="email"
+                name="email"
+                type="email"
+                placeholder="name@company.com"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Password */}
+            <div className="field-group">
+              <label className="field-label" htmlFor="password">
+                Password
+              </label>
+
+              <input
+                className="auth-input"
+                id="password"
+                name="password"
+                type="password"
+                placeholder="••••••••"
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            {/* Confirm Password (Only visible when Signing Up) */}
+            {!isLogin && (
+              <div className="field-group">
+                <label className="field-label" htmlFor="confirmPassword">
+                  Confirm Password
+                </label>
+                <input
+                  className="auth-input"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  placeholder="••••••••"
+                  value={formData.confirmPassword}
+                  onChange={handleChange}
+                  required={!isLogin}
+                />
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button type="submit" className="btn-signin">
+              {isLogin ? "Sign In" : "Sign Up"}
+            </button>
+          </form>
+
+          {/* Toggle Login/Signup */}
+          <div className="signup-row">
+            {isLogin ? (
+              <>
+                Don't have an account?{" "}
+                <a href="#" onClick={toggleAuthMode}>
+                  Sign up for free
+                </a>
+              </>
+            ) : (
+              <>
+                Already have an account?{" "}
+                <a href="#" onClick={toggleAuthMode}>
+                  Sign in here
+                </a>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ── RIGHT: Decorative ── */}
+      <div className="auth-right">
+        <div className="right-inner">
+          <div>
+            <div className="logo-wrap">
+              <div className="logo-icon">
+                <span
+                  className="material-symbols-outlined"
+                  style={{ fontSize: "2.25rem" }}
+                >
+                  dashboard_customize
+                </span>
+              </div>
+              <span className="logo-name">MinimalistPM</span>
+            </div>
+          </div>
+          {/* Mockup card */}
+          <div className="mockup-wrap">
+            <div className="mockup-glow" />
+            <div className="mockup-card">
+              <div className="mock-header">
+                <div className="mock-dot" />
+                <div className="mock-dot" />
+                <div className="mock-dot" />
+              </div>
+
+              <div className="mock-row active">
+                <div className="mock-avatar primary">
+                  <span
+                    className="material-symbols-outlined"
+                    style={{ fontSize: "1rem", color: "#13b6ec" }}
+                  >
+                    check_circle
+                  </span>
                 </div>
-                <div className="stats-badges mt-4">
-                  <span className="stat-badge">50k+ Users</span>
-                  <span className="stat-badge">4.9/5 Rating</span>
+                <div className="mock-lines">
+                  <div className="mock-line p1" style={{ width: "75%" }} />
+                  <div className="mock-line p2" style={{ width: "50%" }} />
                 </div>
               </div>
-            </Col>
 
-            {/* RIGHT AUTH CARD */}
-            <Col
-              md={6}
-              lg={5}
-              xl={4}
-              className="d-flex align-items-center justify-content-center right-panel"
-            >
-              <div className="auth-card-wrapper w-100">
-                <Card className="auth-card border-0">
-                  <Card.Body className="p-5">
-                    {/* Header */}
-                    <div className="auth-header mb-4">
-                      <h2 className="fw-bold mb-2">
-                        {isLogin
-                          ? "Nice to see you 👋"
-                          : "Create an account ✨"}
-                      </h2>
-                      <p className="text-muted mb-4">
-                        {isLogin
-                          ? "Login to continue to InterviewFlow"
-                          : "Register to start scheduling interviews"}
-                      </p>
-                    </div>
-
-                    <Form onSubmit={handleSubmit} className="auth-form">
-                      {/* FULL NAME - Only shows on Signup */}
-                      <div
-                        className={`form-group-animated ${!isLogin ? "show" : ""}`}
-                      >
-                        {!isLogin && (
-                          <Form.Group className="mb-3">
-                            <Form.Label className="form-label-custom">
-                              Full Name
-                            </Form.Label>
-                            <Form.Control
-                              name="fullName"
-                              type="text"
-                              placeholder="John Doe"
-                              value={formData.fullName}
-                              onChange={handleChange}
-                              className="form-input-custom"
-                              required
-                            />
-                          </Form.Group>
-                        )}
-                      </div>
-
-                      {/* EMAIL */}
-                      <Form.Group className="mb-3">
-                        <Form.Label className="form-label-custom">
-                          Email Address
-                        </Form.Label>
-                        <Form.Control
-                          name="email"
-                          type="email"
-                          placeholder="you@example.com"
-                          value={formData.email}
-                          onChange={handleChange}
-                          className="form-input-custom"
-                          required
-                        />
-                      </Form.Group>
-
-                      {/* PASSWORD */}
-                      <Form.Group className="mb-4">
-                        <Form.Label className="form-label-custom">
-                          Password
-                        </Form.Label>
-                        <Form.Control
-                          name="password"
-                          type="password"
-                          placeholder="Enter your password"
-                          value={formData.password}
-                          onChange={handleChange}
-                          className="form-input-custom"
-                          required
-                        />
-                      </Form.Group>
-
-                      {/* Remember Me & Forgot Password */}
-                      {isLogin && (
-                        <div className="d-flex justify-content-between align-items-center mb-4">
-                          <Form.Check
-                            label="Remember me"
-                            className="custom-checkbox"
-                          />
-                          <a
-                            href="#"
-                            className="forgot-link text-decoration-none small"
-                          >
-                            Forgot password?
-                          </a>
-                        </div>
-                      )}
-
-                      {/* Submit Button */}
-                      <Button
-                        variant="primary"
-                        type="submit"
-                        className="submit-btn w-100 py-3 mb-3"
-                      >
-                        {isLogin ? "Sign in" : "Create Account"}
-                      </Button>
-
-                      {/* Divider */}
-
-                      {/* Toggle Auth Mode */}
-                      <p className="text-center mt-4 toggle-text">
-                        {isLogin
-                          ? "Don't have an account?"
-                          : "Already have an account?"}{" "}
-                        <a
-                          href="#"
-                          className="toggle-link"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            toggleAuthMode();
-                          }}
-                        >
-                          {isLogin ? "Sign up" : "Log in"}
-                        </a>
-                      </p>
-                    </Form>
-                  </Card.Body>
-                </Card>
-
-                {/* Terms & Privacy */}
-                <p className="text-center footer-text mt-3">
-                  By continuing, you agree to our{" "}
-                  <a href="#" className="footer-link">
-                    Terms of Service
-                  </a>{" "}
-                  and{" "}
-                  <a href="#" className="footer-link">
-                    Privacy Policy
-                  </a>
-                </p>
+              <div className="mock-row inactive">
+                <div className="mock-avatar gray" />
+                <div className="mock-lines">
+                  <div className="mock-line g1" style={{ width: "100%" }} />
+                  <div className="mock-line g2" style={{ width: "66%" }} />
+                </div>
               </div>
-            </Col>
-          </Row>
-        </Container>
-      ) : (
-        <RegisterWizard />
-      )}
-    </>
+
+              <div className="mock-row inactive">
+                <div className="mock-avatar gray" />
+                <div className="mock-lines">
+                  <div className="mock-line g1" style={{ width: "80%" }} />
+                </div>
+              </div>
+
+              <div className="mock-avatars">
+                <div className="mock-ava mock-ava-1" />
+                <div className="mock-ava mock-ava-2" />
+                <div className="mock-ava mock-ava-3" />
+                <div className="mock-ava mock-ava-4">+5</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Quote */}
+        </div>
+      </div>
+    </div>
   );
 };
 
